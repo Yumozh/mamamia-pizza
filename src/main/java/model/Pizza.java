@@ -3,15 +3,15 @@ package model;
 public class Pizza extends MenuItem{
     private String crust;
 
-
-    public Pizza(String size, String itemName) {
+    public Pizza(String size, String itemName, String crust) {
         super(size, itemName);
+        this.crust = crust;
     }
 
     @Override
-    public double totalPrice(String size) {
+    public double getTotalPrice() {
 
-        return switch (size) {
+        return switch (this.size) {
             case "8", "Personal" -> 8.5;
             case "12", "Medium" -> 12.0;
             case "16", "Large" -> 16.5;

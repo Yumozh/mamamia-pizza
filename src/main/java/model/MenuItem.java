@@ -1,7 +1,7 @@
 package model;
 
 public abstract class MenuItem {
-    private String size;
+    protected String size;
     private String itemName;
 
     public MenuItem(String size, String itemName) {
@@ -25,5 +25,5 @@ public abstract class MenuItem {
         this.itemName = itemName;
     }
 
-    public abstract double totalPrice(String size);
+    public abstract double getTotalPrice();
 }
