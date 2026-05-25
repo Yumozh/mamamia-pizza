@@ -25,5 +25,5 @@ public abstract class MenuItem {
         this.itemName = itemName;
     }
 
-    public abstract double getTotalPrice();
+    public abstract double calculatePrice(String Size);
 }

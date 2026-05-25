@@ -37,9 +37,9 @@ public class Order{
         orderedItemsList.remove(item);
     }
 
-    public double getTotalPrice() {
-        return this.orderedItemsList.stream()
-                .mapToDouble(MenuItem::getTotalPrice)
-                .sum();
-    }
+//    public double getTotalPrice() {
+//        return this.orderedItemsList.stream()
+//                .mapToDouble(MenuItem::calculatePrice)
+//                .sum();
+//    }
 }

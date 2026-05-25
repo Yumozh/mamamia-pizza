@@ -2,10 +2,6 @@ package ui;
 
 import model.Order;
 import model.Pizza;
-import model.Topping;
-import model.MenuItem;
-
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -86,49 +82,6 @@ public class UserInterface {
                 """);
         String crust = scan.nextLine();
 
-        Pizza pizza = new Pizza(sizePizza, "regular", crust);
-        addToppings(pizza);
 
-    }
-    public void addToppings(Pizza pizza){
-//        System.out.println("""
-//                \n
-//                Select one type of meat from following:
-//                1 - Pepperoni
-//                1 - Sausage
-//                2 - Ham
-//                3 - Bacon
-//                4 - Chicken
-//                4 - Meatball
-//                """);
-//        String meat = scan.nextLine();
-        boolean isRunning = true;
-        System.out.println("""
-                \n
-                Select one type of meat from following:
-                1 - Meat
-                1 - Cheese
-                2 - Regular
-                3 - Sauces
-                4 - Sides
-                """);
-
-        while(isRunning){
-            String choice = scan.nextLine().toLowerCase().trim();
-
-            switch (choice){
-                case "1" -> {
-                    Topping meatTopping = new Topping(pizza.getSize(), "Meat",true);
-                }
-                case "2" -> {
-                    Topping cheeseTopping = new Topping(pizza.getSize(), "Cheese",true );
-                }
-                case "3" -> {
-                    Topping regularTopping = new Topping(pizza.getSize(), "Regular",true );
-                }
-                case "X", "Exit" -> isRunning = false;
-                default -> throw new IllegalStateException ("Invalid input! Try again.");
-            }
         }
     }
-}
