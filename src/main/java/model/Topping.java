@@ -6,7 +6,7 @@ public class Topping {
     private String category;
     private List<String> categoryOptions;
 
-    public Topping(String category, List<String> categoryOption) {
+    public Topping(String category, List<String> categoryOptions) {
         this.category = category;
         this.categoryOptions = categoryOptions;
     }

@@ -10,29 +10,29 @@ public class Pizza extends MenuItem{
     private static Map<String, Topping> toppingsMap;
     private Map<String, List<String>> selectedOptions;
 
-    public Pizza(String size, String itemName, String crust) {
+    public Pizza(String size, String crust) {
         super(size, "regular");
         this.crust = crust;
-        HashMap<String, Topping> toppingMap = new HashMap<>();
-        toppingMap.put("meat", new Topping("meat", new ArrayList<>(List.of(
+        HashMap<String, Topping> toppingsMap = new HashMap<>();
+        toppingsMap.put("meat", new Topping("meat", new ArrayList<>(List.of(
                 "pepperoni", "sausage", "ham", "bacon", "chicken", "meatball"))));
-        toppingMap.put("cheese", new Topping("cheese", new ArrayList<>(List.of(
+        toppingsMap.put("cheese", new Topping("cheese", new ArrayList<>(List.of(
                 "Mozzarella", "Parmesan", "Ricotta", "Goat Cheese", "Buffalo"))));
 
-        toppingMap.put("extra meat", new Topping("extra meat", new ArrayList<>(List.of(
+        toppingsMap.put("extra meat", new Topping("extra meat", new ArrayList<>(List.of(
                 "pepperoni", "sausage", "ham", "bacon", "chicken", "meatball"))));
-        toppingMap.put("extra cheese", new Topping("extra cheese", new ArrayList<>(List.of(
+        toppingsMap.put("extra cheese", new Topping("extra cheese", new ArrayList<>(List.of(
                 "Mozzarella", "Parmesan", "Ricotta", "Goat Cheese", "Buffalo"))));
 
-        toppingMap.put("regular", new Topping("regular", new ArrayList<>(List.of(
+        toppingsMap.put("regular", new Topping("regular", new ArrayList<>(List.of(
                 "onions", "mushrooms", "bell peppers", "olives",
                 "tomatoes", "spinach", "basil", "pineapple", "anchovies"))));
-        toppingMap.put("sauces", new Topping("sauces", new ArrayList<>(List.of(
+        toppingsMap.put("sauces", new Topping("sauces", new ArrayList<>(List.of(
                 "marinara", "alfredo", "pesto", "bbq", "buffalo", "olive oil"))));
-        toppingMap.put("sides", new Topping("sides", new ArrayList<>(List.of(
+        toppingsMap.put("sides", new Topping("sides", new ArrayList<>(List.of(
                 "red pepper", "parmesan"))));
 
-        this.toppingsMap = toppingMap;
+        this.toppingsMap = toppingsMap;
 
         this.selectedOptions = new HashMap<>();
         this.selectedOptions.put("meat", new ArrayList<>());
@@ -48,6 +48,7 @@ public class Pizza extends MenuItem{
     public Map<String, Topping> getToppingsMap() {
         return toppingsMap;
     }
+
 
     public void setToppingsMap(Map<String, Topping> toppingsMap) {
         this.toppingsMap = toppingsMap;
