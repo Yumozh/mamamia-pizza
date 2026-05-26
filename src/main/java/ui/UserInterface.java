@@ -4,6 +4,8 @@ import model.Order;
 import model.Pizza;
 import model.Topping;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -107,33 +109,65 @@ public class UserInterface {
             String choice = scan.nextLine().toLowerCase().trim();
 
             switch (choice) {
-                case "1", "add meat" -> displayToppingsOptions(pizza.getToppingsMap(), "meat");
-                case "2", "add cheese" -> displayToppingsOptions(pizza.getToppingsMap(), "cheese");
-                case "3", "add regular toppings" -> displayToppingsOptions(pizza.getToppingsMap(), "regular");
-                case "4", "add sauces" -> displayToppingsOptions(pizza.getToppingsMap(), "sauces");
-                case "5", "add sides" -> displayToppingsOptions(pizza.getToppingsMap(), "sides");
+                case "1", "add meat" -> displayToppingsOptions(pizza.getToppingsMap(), "meat", pizza);
+                case "2", "add cheese" -> displayToppingsOptions(pizza.getToppingsMap(), "cheese", pizza);
+                case "3", "add regular toppings" -> displayToppingsOptions(pizza.getToppingsMap(), "regular", pizza);
+                case "4", "add sauces" -> displayToppingsOptions(pizza.getToppingsMap(), "sauces", pizza);
+                case "5", "add sides" -> displayToppingsOptions(pizza.getToppingsMap(), "sides", pizza);
                 case "x", "exit" -> isRunning = false;
                 default -> throw new IllegalStateException("Invalid input! Try again.");
             }
         }
     }
 
-    public void displayToppingsOptions(Map<String, Topping> toppingsMap, String category){
+    public void displayToppingsOptions(Map<String, Topping> toppingsMap, String category, Pizza pizza){
         //display all meats available
         Topping topping = toppingsMap.get(category.toLowerCase());
 
         if (topping != null) {
             System.out.println("Available items in [" + category + "]:");
+            int index = 0;
             for (String option : topping.getCategoryOptions()) {
-                System.out.println(" - " + option);
+                System.out.println(index + " " + option);
+                index ++;
             }
         } else {
             System.out.println("Category '" + category + "' does not exist.");
         }
-        //Enter meat name or exit
-        //add category and name om choice to the list selected Options
+        addToppingSelection(category, pizza, topping);
     }
-    public void makeToppingsChoice(){
+
+    private void addToppingSelection(String category, Pizza pizza, Topping topping) {
+        System.out.println("Enter B to go back to topping categories.");
+        //Enter meat name or exit
+        String choice = scan.nextLine();
+
+        int totalOptions = topping.getCategoryOptions().size();
+
+        if (choice.equalsIgnoreCase("B")) {
+            return;
+        }
+        try {
+            // Try parsing the input to an integer choice
+            int choiceNumber = Integer.parseInt(choice);
+            List<String> options = topping.getCategoryOptions();
+
+            if (choiceNumber >= 0 && choiceNumber < totalOptions) {
+
+                String selectedOptionName = options.get(choiceNumber);
+                pizza.addTopping(category, selectedOptionName);
+
+                System.out.println(selectedOptionName + " successfully added to your pizza!");
+
+            } else {
+                System.out.println("Invalid selection number. Please try again.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number or 'B' to go back.");
+        }
+    }
+
+    public void addAllToppings(){
 
     }
 
