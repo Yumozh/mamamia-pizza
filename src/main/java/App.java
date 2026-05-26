@@ -14,15 +14,14 @@ public class App {
 //        userInterface.runHomeScreen();
 
         Map<String, Topping> pizzaMenu = new HashMap<>();
-        pizzaMenu = Pizza.getToppingsMap();
+
 
         Pizza pizza = new Pizza("8", "regular", "thin");
+        pizza.addTopping("meat", "pepperoni");
+        pizza.addTopping("cheese", "mozzarella");
+        pizza.addTopping("sauces", "pesto");
 
-        Topping pep = pizzaMenu.get("meat");
-        if (pep != null) {
-            System.out.println("Expected: 1.0 | Actual: " + pep.calculatePrice("8"));
-        } else {
-            System.out.println("Error: 'pepperoni' key not found in Map!");
-        }
+        System.out.println(pizza.calculatePrice("8"));
+
     }
 }

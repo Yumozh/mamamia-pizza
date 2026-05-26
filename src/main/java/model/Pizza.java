@@ -8,23 +8,41 @@ import java.util.Map;
 public class Pizza extends MenuItem{
     private String crust;
     private static Map<String, Topping> toppingsMap;
+    private Map<String, List<String>> selectedOptions;
 
     public Pizza(String size, String itemName, String crust) {
         super(size, "regular");
         this.crust = crust;
         HashMap<String, Topping> toppingMap = new HashMap<>();
-        toppingMap.put("meat", new Topping("meat", true, new ArrayList<>(List.of(
+        toppingMap.put("meat", new Topping("meat", new ArrayList<>(List.of(
                 "pepperoni", "sausage", "ham", "bacon", "chicken", "meatball"))));
-        toppingMap.put("cheese", new Topping("cheese", true, new ArrayList<>(List.of(
+        toppingMap.put("cheese", new Topping("cheese", new ArrayList<>(List.of(
                 "Mozzarella", "Parmesan", "Ricotta", "Goat Cheese", "Buffalo"))));
-        toppingMap.put("regular", new Topping("regular", false, new ArrayList<>(List.of(
+
+        toppingMap.put("extra meat", new Topping("extra meat", new ArrayList<>(List.of(
+                "pepperoni", "sausage", "ham", "bacon", "chicken", "meatball"))));
+        toppingMap.put("extra cheese", new Topping("extra cheese", new ArrayList<>(List.of(
+                "Mozzarella", "Parmesan", "Ricotta", "Goat Cheese", "Buffalo"))));
+
+        toppingMap.put("regular", new Topping("regular", new ArrayList<>(List.of(
                 "onions", "mushrooms", "bell peppers", "olives",
                 "tomatoes", "spinach", "basil", "pineapple", "anchovies"))));
-        toppingMap.put("sauces", new Topping("sauces", false, new ArrayList<>(List.of(
+        toppingMap.put("sauces", new Topping("sauces", new ArrayList<>(List.of(
                 "marinara", "alfredo", "pesto", "bbq", "buffalo", "olive oil"))));
-        toppingMap.put("sides", new Topping("sides", false, new ArrayList<>(List.of(
+        toppingMap.put("sides", new Topping("sides", new ArrayList<>(List.of(
                 "red pepper", "parmesan"))));
+
         this.toppingsMap = toppingMap;
+
+        this.selectedOptions = new HashMap<>();
+        this.selectedOptions.put("meat", new ArrayList<>());
+        this.selectedOptions.put("cheese", new ArrayList<>());
+        this.selectedOptions.put("extra meat", new ArrayList<>());
+        this.selectedOptions.put("extra cheese", new ArrayList<>());
+        this.selectedOptions.put("regular", new ArrayList<>());
+        this.selectedOptions.put("sauces", new ArrayList<>());
+        this.selectedOptions.put("sides", new ArrayList<>());
+
     }
 
     public Map<String, Topping> getToppingsMap() {
@@ -44,12 +62,26 @@ public class Pizza extends MenuItem{
         };
     }
 
+    public void addTopping(String category, String toppingName) {
+        if (selectedOptions.containsKey(category)) {
+            selectedOptions.get(category).add(toppingName);
+        }else {
+            System.out.println("Error: Category '" + category + "' not found!");
+        }
+    }
 
     public double calculateToppingTotal(){
         double toppingsTotal = 0;
 
-        for (Topping toppingList : toppingsMap.values()) {
-                toppingsTotal += toppingList.calculatePrice(size);
+        for (String category : selectedOptions.keySet()) {
+            List<String> selectedInCategory = selectedOptions.get(category);
+            int count = selectedInCategory.size();
+
+            if (count > 0 ){
+                Topping toppingCategory = toppingsMap.get(category);
+                double pricePerItem = toppingCategory.calculatePrice(this.size);
+                toppingsTotal += count * pricePerItem;
+            }
         }
         return toppingsTotal;
     }
