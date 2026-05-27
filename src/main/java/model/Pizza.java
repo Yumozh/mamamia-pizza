@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Pizza extends MenuItem{
     private String crust;
-    private static Map<String, Topping> toppingsMap;
+    private Map<String, Topping> toppingsMap;
     private Map<String, List<String>> selectedOptions;
 
     public Pizza(String size, String crust) {
@@ -42,16 +42,10 @@ public class Pizza extends MenuItem{
         this.selectedOptions.put("regular", new ArrayList<>());
         this.selectedOptions.put("sauces", new ArrayList<>());
         this.selectedOptions.put("sides", new ArrayList<>());
-
     }
 
     public Map<String, Topping> getToppingsMap() {
         return toppingsMap;
-    }
-
-
-    public void setToppingsMap(Map<String, Topping> toppingsMap) {
-        this.toppingsMap = toppingsMap;
     }
 
     public double getBasePrice() {
