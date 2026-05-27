@@ -1,6 +1,6 @@
 package model;
 
-public abstract class MenuItem {
+public abstract class MenuItem implements Priceable{
     protected String size;
     private String itemName;
 
@@ -25,5 +25,5 @@ public abstract class MenuItem {
         this.itemName = itemName;
     }
 
-    public abstract double calculatePrice(String Size);
+    public abstract double getPrice();
 }

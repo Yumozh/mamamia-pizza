@@ -44,6 +44,14 @@ public class Pizza extends MenuItem{
         this.selectedOptions.put("sides", new ArrayList<>());
     }
 
+    public Map<String, List<String>> getSelectedOptions() {
+        return selectedOptions;
+    }
+
+    public void setSelectedOptions(Map<String, List<String>> selectedOptions) {
+        this.selectedOptions = selectedOptions;
+    }
+
     public Map<String, Topping> getToppingsMap() {
         return toppingsMap;
     }
@@ -82,7 +90,7 @@ public class Pizza extends MenuItem{
     }
 
     @Override
-    public double calculatePrice(String size) {
+    public double getPrice() {
         return getBasePrice() + calculateToppingTotal();
     }
 }

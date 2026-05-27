@@ -7,7 +7,7 @@ public class GarlicKnots extends MenuItem{
     }
 
     @Override
-    public double calculatePrice(String Size) {
+    public double getPrice(){
         return 1.5;
     }
 }

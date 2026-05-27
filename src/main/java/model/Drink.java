@@ -3,8 +3,8 @@ package model;
 public class Drink extends MenuItem{
     private String flavor;
 
-    public Drink(String size, String itemName) {
-        super(size, itemName);
+    public Drink(String size, String flavor) {
+        super(size, "drink");
         this.flavor = flavor;
     }
 
@@ -17,7 +17,7 @@ public class Drink extends MenuItem{
     }
 
     @Override
-    public double calculatePrice(String size) {
+    public double getPrice(){
         return switch (this.size) {
             case "small" -> 2.0;
             case "medium" -> 2.5;

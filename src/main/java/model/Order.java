@@ -1,33 +1,28 @@
 package model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order{
+public class Order implements Priceable{
     private String customerName;
-    private LocalDate orderTime;
+    private LocalDateTime orderTime;
     private List<MenuItem> orderedItemsList;
 
     public Order(String customerName) {
         this.customerName = customerName;
+        this.orderTime = LocalDateTime.now();
         this.orderedItemsList = new ArrayList<MenuItem>();
     }
 
-    public LocalDate getOrderTime() {
+    public LocalDateTime getOrderTime() {
         return orderTime;
     }
 
-    public void setOrderTime(LocalDate orderTime) {
-        this.orderTime = orderTime;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public double getPrice(){
+        return orderedItemsList.stream()
+                .mapToDouble(MenuItem::getPrice)
+                .sum();
     }
 
     public void addMenuItem(MenuItem item){
@@ -37,9 +32,8 @@ public class Order{
         orderedItemsList.remove(item);
     }
 
-//    public double getTotalPrice() {
-//        return this.orderedItemsList.stream()
-//                .mapToDouble(MenuItem::calculatePrice)
-//                .sum();
-//    }
+    public List<MenuItem> getOrderedItems() {
+        return orderedItemsList;
+    }
+
 }

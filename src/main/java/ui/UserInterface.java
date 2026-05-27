@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class UserInterface {
     Scanner scan = new Scanner(System.in);
+    private Order currentOrder;
 
     public void display() {
         System.out.println("===============================================================================");
@@ -41,7 +42,7 @@ public class UserInterface {
         System.out.println("Enter your name: ");
         String customerName = scan.nextLine();
 
-        Order order = new Order(customerName);
+        currentOrder = new Order(customerName);
 
         while (inOrderScreen) {
             System.out.println("===============================================================================");
@@ -54,19 +55,22 @@ public class UserInterface {
                     2. Add Drink
                     3. Add Garlic Knots
                     4. Check Out
-                    X. Home
+                    X. Cancel Order
                     """);
             String choice = scan.nextLine().toLowerCase().trim();
 
             switch (choice) {
-                case "1", "add pizza" -> addPizzaToOrder(order);
-                case "2", "add drink" -> addDrinkToOrder(order);
-                case "3", "add garlic knots" -> addGarlicKnotsToOrder(order);
-                case "4", "check out" -> checkout();
+                case "1", "add pizza" -> addPizzaToOrder(currentOrder);
+                case "2", "add drink" -> addDrinkToOrder(currentOrder);
+                case "3", "add garlic knots" -> addGarlicKnotsToOrder(currentOrder);
+                case "4", "check out" -> checkout(currentOrder);
+                case "x", "cancel" -> {
+                    System.out.println("Order cancelled. Returning to home screen...");
+                    inOrderScreen = false;
+                }
                 default -> throw new IllegalStateException("Invalid input! Try again.");
             }
         }
-
     }
 
     public void addPizzaToOrder(Order order) {
@@ -219,9 +223,33 @@ public class UserInterface {
         order.addMenuItem(garlicKnots);
     }
 
-    public void checkout(){
+    public void checkout(Order order){
+        boolean hasMenuItems = true;
+
+        while(hasMenuItems){
+
+            if(order.getOrderedItems().isEmpty()){
+                System.out.println("""
+            \nYou have nothing added to your order!
+            Please make at least one item (Pizza, Drink or Garlic Knots to you order.)
+            Would you like to continue adding items? (yes/no)?
+            """);
+            String response = scan.nextLine().toLowerCase().trim();
+            if(response.equalsIgnoreCase("yes")){
+                return;
+            }
+            return;//
+            }
+
+            displayOrderSummary(order);
+        }
 
     }
+
+    public void displayOrderSummary(Order order){
+
+    }
+
 
 
 }
