@@ -52,6 +52,14 @@ public class Pizza extends MenuItem{
         this.selectedOptions = selectedOptions;
     }
 
+    public String getCrust() {
+        return crust;
+    }
+
+    public void setCrust(String crust) {
+        this.crust = crust;
+    }
+
     public Map<String, Topping> getToppingsMap() {
         return toppingsMap;
     }

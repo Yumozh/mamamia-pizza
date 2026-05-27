@@ -25,6 +25,22 @@ public class Order implements Priceable{
                 .sum();
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public List<MenuItem> getOrderedItemsList() {
+        return orderedItemsList;
+    }
+
+    public void setOrderedItemsList(List<MenuItem> orderedItemsList) {
+        this.orderedItemsList = orderedItemsList;
+    }
+
     public void addMenuItem(MenuItem item){
         orderedItemsList.add(item);
     }

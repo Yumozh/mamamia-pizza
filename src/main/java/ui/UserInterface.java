@@ -247,6 +247,44 @@ public class UserInterface {
     }
 
     public void displayOrderSummary(Order order){
+        System.out.println("\n===============================================================================");
+        System.out.println("                        ORDER SUMMARY");
+        System.out.println("===============================================================================");
+        System.out.println("Customer: " + order.getCustomerName() + "\n");
+
+        List<MenuItem> items = order.getOrderedItemsList();
+        int itemNumber = 1;
+
+        for(MenuItem item : items){
+            if(item instanceof Pizza){
+                Pizza pizza = (Pizza) item;
+                System.out.println(itemNumber + ". PIZZA");
+                System.out.println(" Size: " + pizza.getSize());
+                System.out.println(" Crust: " + pizza.getCrust());
+
+                Map<String, List<String>> toppings = pizza.getSelectedOptions();
+                System.out.println("  Toppings: ");
+                for(String category : toppings.keySet()){
+                    List<String> sameCategoryToppings = toppings.get(category);
+                    if(!sameCategoryToppings.isEmpty()){
+                        System.out.println("   " + category + ": " + sameCategoryToppings);
+                    }
+                }
+                System.out.println("  Price: $"+ String.format("%.2f", pizza.getPrice()) + "\n");
+            } else if (item instanceof Drink) {
+                Drink drink = (Drink) item;
+                System.out.println(itemNumber + ". DRINK -" + drink.getFlavor());
+                System.out.println(" Size: " + drink.getSize());
+                System.out.println(" Price: $" + drink.getPrice());
+            } else if (item instanceof GarlicKnots){
+                System.out.println(itemNumber + ". GARLIC KNOTS");
+                System.out.println(" Price: $" + item.getPrice());
+            }
+            itemNumber++;
+        }
+        System.out.println("===============================================================================");
+        System.out.println("TOTAL: $" + String.format("%.2f", order.getPrice()));
+        System.out.println("===============================================================================\n");
 
     }
 
