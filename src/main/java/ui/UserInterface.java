@@ -1,8 +1,6 @@
 package ui;
 
-import model.Order;
-import model.Pizza;
-import model.Topping;
+import model.*;
 
 import java.util.List;
 import java.util.Map;
@@ -55,12 +53,16 @@ public class UserInterface {
                     1. Add Pizza
                     2. Add Drink
                     3. Add Garlic Knots
-                    X. Exit
+                    4. Check Out
+                    X. Home
                     """);
             String choice = scan.nextLine().toLowerCase().trim();
 
             switch (choice) {
                 case "1", "add pizza" -> addPizzaToOrder(order);
+                case "2", "add drink" -> addDrinkToOrder(order);
+                case "3", "add garlic knots" -> addGarlicKnotsToOrder(order);
+                case "4", "check out" -> checkout();
                 default -> throw new IllegalStateException("Invalid input! Try again.");
             }
         }
@@ -188,4 +190,38 @@ public class UserInterface {
             return false;
         }
     }
+
+    private void addDrinkToOrder(Order order){
+        System.out.println("""
+                        \n
+                        Select size of your drink from following:
+                        1 - Small
+                        2 - Medium
+                        3 - Large
+                """);
+        String drinkSize = scan.nextLine();
+        System.out.println("""
+                        \n
+                        Select flavor of your drink from following:
+                        1 - Cola
+                        2 - Orange
+                        3 - Lemon
+                        4 - Root Beer
+                """);
+        String drinkFlavor = scan.nextLine();
+
+        Drink drink = new Drink(drinkSize, drinkFlavor);
+        order.addMenuItem(drink);
+    }
+
+    private void addGarlicKnotsToOrder(Order order){
+        GarlicKnots garlicKnots = new GarlicKnots("regular", "garlic knots");
+        order.addMenuItem(garlicKnots);
+    }
+
+    public void checkout(){
+
+    }
+
+
 }
