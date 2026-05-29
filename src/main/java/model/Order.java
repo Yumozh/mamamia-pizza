@@ -33,16 +33,9 @@ public class Order implements Priceable{
         return orderedItemsList;
     }
 
-    public void setOrderedItemsList(List<MenuItem> orderedItemsList) {
-        this.orderedItemsList = orderedItemsList;
-    }
-
     public void addMenuItem(MenuItem item){
         orderedItemsList.add(item);
         System.out.println("Item was added to your order!");
-    }
-    public void removeMenuItem(MenuItem item){
-        orderedItemsList.remove(item);
     }
 
     public List<MenuItem> getOrderedItems() {
