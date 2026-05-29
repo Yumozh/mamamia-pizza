@@ -13,6 +13,7 @@ public class UserInterface {
         System.out.println("===============================================================================");
         System.out.println("               🍕 WELCOME TO THE PIZZA MAMA MIA APP! 🍕");
         System.out.println("===============================================================================\n");
+        runHomeScreen();
     }
 
     public void runHomeScreen() {
@@ -28,8 +29,8 @@ public class UserInterface {
             String choice = scan.nextLine().toLowerCase().trim();
 
             switch (choice) {
-                case "1", "Make Order", "Order" -> makeOrder();
-                case "X", "Exit" -> isRunning = false;
+                case "1", "make order", "order" -> makeOrder();
+                case "x", "exit" -> isRunning = false;
                 default -> throw new IllegalStateException("Invalid input! Try again.");
             }
         }
@@ -81,9 +82,9 @@ public class UserInterface {
         System.out.println("""
                         \n
                         Select size of your pizza from following:
-                        Personal (8")
-                        Medium (12")
-                        Large (16")
+                        8 - Personal (8")
+                        12 - Medium (12")
+                        16 - Large (16")
                 """);
         String sizePizza = scan.nextLine();
         System.out.println("""
@@ -99,6 +100,51 @@ public class UserInterface {
         Pizza pizza = new Pizza(sizePizza, crust);
         displayCategoryMenu(pizza);
         order.addMenuItem(pizza);
+    }
+
+    public void displayCategoryMenu(Pizza pizza) {
+        boolean addingToppings = true;
+        boolean isExtraMeet = pizza.isAtLeastOneToppingProvided(Category.MEAT);
+        boolean isExtraCheese = pizza.isAtLeastOneToppingProvided(Category.CHEESE);
+
+        while (addingToppings) {
+            System.out.println("\\n=== SELECT TOPPING CATEGORY ===");
+            System.out.println("""
+                \n
+                1. %s
+                2. %s
+                3. Add regular toppings
+                4. Add sauces
+                5. Add sides
+                0. Done adding toppings
+                """.formatted(isExtraMeet ? "Add Extra Meet" : "Add Meat", isExtraCheese ? "Add Extra Cheese" : "Add Cheese"));
+
+            String choice = scan.nextLine().toLowerCase().trim();
+
+            switch (choice) {
+                case "1", "add meat", "add extra meat" -> {
+                    if (isExtraMeet) {
+                        displayToppingsOptions(Category.EXTRA_MEAT, pizza);
+                    } else {
+                        isExtraMeet = displayToppingsOptions(Category.MEAT, pizza);
+                    }
+                }
+                case "2", "add cheese", "add extra cheese" -> {
+                    if (isExtraCheese) {
+                        displayToppingsOptions(Category.EXTRA_CHEESE, pizza);
+                    } else {
+                        isExtraCheese = displayToppingsOptions(Category.CHEESE, pizza);
+                    }
+                }
+                case "3", "add regular toppings" -> displayToppingsOptions(Category.REGULAR, pizza);
+                case "4", "add sauces" -> displayToppingsOptions(Category.SAUCES, pizza);
+                case "5", "add sides" -> displayToppingsOptions(Category.SIDES, pizza);
+                case "0", "exit" -> {
+                    addingToppings = false;
+                }
+                default -> throw new IllegalStateException("Invalid input! Try again.");
+            }
+        }
     }
 
     public void addSignaturePizza(Order order){
@@ -157,76 +203,57 @@ public class UserInterface {
         }
     }
 
-    public void displayCategoryMenu(Pizza pizza) {
-        boolean addingToppings = true;
-        boolean isExtraMeet = pizza.isAtLeastOneToppingProvided("meat");
-        boolean isExtraCheese = pizza.isAtLeastOneToppingProvided("cheese");
-
-        while (addingToppings) {
-            System.out.println("\\n=== SELECT TOPPING CATEGORY ===");
-            System.out.println("""
-                \n
-                1. %s
-                2. %s
-                3. Add regular toppings
-                4. Add sauces
-                5. Add sides
-                0. Done adding toppings
-                """.formatted(isExtraMeet ? "Add Extra Meet" : "Add Meat", isExtraCheese ? "Add Extra Cheese" : "Add Cheese"));
-
-            String choice = scan.nextLine().toLowerCase().trim();
-
-            switch (choice) {
-                case "1", "add meat", "add extra meat" -> {
-                    if (isExtraMeet) {
-                        displayToppingsOptions(pizza.getToppingsMap(), "extra meat", pizza);
-                    } else {
-                        isExtraMeet = displayToppingsOptions(pizza.getToppingsMap(), "meat", pizza);
-                    }
-                }
-                case "2", "add cheese", "add extra cheese" -> {
-                    if (isExtraCheese) {
-                        displayToppingsOptions(pizza.getToppingsMap(), "extra cheese", pizza);
-                    } else {
-                        isExtraCheese = displayToppingsOptions(pizza.getToppingsMap(), "cheese", pizza);
-                    }
-                }
-                case "3", "add regular toppings" -> displayToppingsOptions(pizza.getToppingsMap(), "regular", pizza);
-                case "4", "add sauces" -> displayToppingsOptions(pizza.getToppingsMap(), "sauces", pizza);
-                case "5", "add sides" -> displayToppingsOptions(pizza.getToppingsMap(), "sides", pizza);
-                case "0", "exit" -> {
-                    addingToppings = false;
-                }
-                default -> throw new IllegalStateException("Invalid input! Try again.");
-            }
-        }
-    }
-
-    public boolean displayToppingsOptions(Map<String, Topping> toppingsMap, String category, Pizza pizza) {
+    public boolean displayToppingsOptions(Category category, Pizza pizza) {
         //display all meats available
-        Topping topping = toppingsMap.get(category.toLowerCase());
+        ToppingCategory toppingCategory = pizza.getToppingsMap().get(category);
 
-        if (topping != null) {
-            System.out.println("Available items in [" + category + "]:");
-            int index = 0;
-            for (String option : topping.getCategoryOptions()) {
-                System.out.println(index + " " + option);
-                index++;
-            }
-        } else {
-            System.out.println("Category '" + category + "' does not exist.");
+        System.out.println("Available items in [" + toppingCategory.getCategory() + "]:");
+
+        int index = 1;
+
+        for (String option : toppingCategory.getCategoryOptions()) {
+            System.out.println(index + " " + option);
+            index++;
+        }
+
+        System.out.println("Enter topping number to choose topping or B to return back");
+        String choice = scan.nextLine();
+
+        if (choice.equalsIgnoreCase("B")) {
             return false;
         }
 
-        return addToppingToPizza(category, pizza, topping);
+        List<String> options = toppingCategory.getCategoryOptions();
+        int totalOptions = options.size();
+
+        try {
+            // Try parsing the input to an integer choice
+            int choiceNumber = Integer.parseInt(choice);
+
+            if (choiceNumber >= 1 && choiceNumber < totalOptions - 1) {
+
+                String selectedOptionName = options.get(choiceNumber - 1);
+                pizza.addTopping(category, selectedOptionName);
+
+                System.out.println(selectedOptionName + " successfully added to your pizza!");
+
+                return true;
+            } else {
+                System.out.println("Invalid selection number. Please try again.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number or 'B' to go back.");
+            return false;
+        }
     }
 
     public void startRemoveToppingsPrompt(Pizza pizza)
     {
         while (true) {
-            Map<String, List<String>> toppings = pizza.getSelectedOptions();
+            Map<Category, List<String>> toppings = pizza.getSelectedOptions();
 
-            for (Map.Entry<String, List<String>> entry : toppings.entrySet()) {
+            for (Map.Entry<Category, List<String>> entry : toppings.entrySet()) {
                 if (entry.getValue().isEmpty()) {
                     continue;
                 }
@@ -246,19 +273,16 @@ public class UserInterface {
                 break; // Breaks out of the while loop immediately
             }
 
-            String targetCategory = null;
+            Category targetCategory = null;
             String exactToppingName = null;
 
-            for (Map.Entry<String, List<String>> entry : toppings.entrySet()) {
+            for (Map.Entry<Category, List<String>> entry : toppings.entrySet()) {
                 for (String topping : entry.getValue()) {
                     if (topping.equalsIgnoreCase(input)) {
                         targetCategory = entry.getKey();
                         exactToppingName = topping; // Capture exact case for the remove method
                         break;
                     }
-                }
-                if (targetCategory != null) {
-                    break;
                 }
             }
 
@@ -269,40 +293,6 @@ public class UserInterface {
 
             pizza.removeTopping(targetCategory, exactToppingName);
             System.out.println();
-        }
-    }
-
-    private boolean addToppingToPizza(String category, Pizza pizza, Topping topping) {
-        System.out.println("Enter B to go back to topping categories.");
-        //Enter meat name or exit
-        String choice = scan.nextLine();
-
-        int totalOptions = topping.getCategoryOptions().size();
-
-        if (choice.equalsIgnoreCase("B")) {
-            return false;
-        }
-
-        try {
-            // Try parsing the input to an integer choice
-            int choiceNumber = Integer.parseInt(choice);
-            List<String> options = topping.getCategoryOptions();
-
-            if (choiceNumber >= 0 && choiceNumber < totalOptions) {
-
-                String selectedOptionName = options.get(choiceNumber);
-                pizza.addTopping(category, selectedOptionName);
-
-                System.out.println(selectedOptionName + " successfully added to your pizza!");
-
-                return true;
-            } else {
-                System.out.println("Invalid selection number. Please try again.");
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number or 'B' to go back.");
-            return false;
         }
     }
 
@@ -394,15 +384,14 @@ public class UserInterface {
         int itemNumber = 1;
 
         for(MenuItem item : items){
-            if(item instanceof Pizza){
-                Pizza pizza = (Pizza) item;
+            if(item instanceof Pizza pizza){
                 System.out.println(itemNumber + ". PIZZA");
                 System.out.println(" Size: " + pizza.getSize());
                 System.out.println(" Crust: " + pizza.getCrust());
 
-                Map<String, List<String>> toppings = pizza.getSelectedOptions();
+                Map<Category, List<String>> toppings = pizza.getSelectedOptions();
                 System.out.println("  Toppings: ");
-                for(String category : toppings.keySet()){
+                for(Category category : toppings.keySet()){
                     List<String> sameCategoryToppings = toppings.get(category);
                     if(!sameCategoryToppings.isEmpty()){
                         System.out.println("   " + category + ": " + sameCategoryToppings);
@@ -410,8 +399,7 @@ public class UserInterface {
                 }
                 System.out.println("  Price: $"+ String.format("%.2f", pizza.getPrice()) + "\n");
 
-            } else if (item instanceof Drink) {
-                Drink drink = (Drink) item;
+            } else if (item instanceof Drink drink) {
                 System.out.println(itemNumber + ". DRINK - " + drink.getFlavor());
                 System.out.println(" Size: " + drink.getSize());
                 System.out.println(" Price: $" + String.format("%.2f", drink.getPrice()));
@@ -422,12 +410,10 @@ public class UserInterface {
             }
             itemNumber++;
         }
+
         System.out.println("===============================================================================");
         System.out.println("TOTAL: $" + String.format("%.2f", order.getPrice()));
         System.out.println("===============================================================================\n");
 
     }
-
-
-
 }

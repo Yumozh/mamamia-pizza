@@ -8,7 +8,6 @@ import java.util.Map;
 
 public class Receipt {
     private Order order;
-
     private String receiptsFolder;
 
     public Receipt(Order order) {
@@ -16,9 +15,6 @@ public class Receipt {
         this.receiptsFolder = "src/main/java/data";
     }
 
-    /**
-     * Creates the receipts folder if it doesn't exist
-     */
 
     /**
      * Generates the complete receipt content as a formatted string
@@ -27,22 +23,18 @@ public class Receipt {
         StringBuilder receipt = new StringBuilder();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
 
-        // Header
         receipt.append("===============================================================================\n");
         receipt.append("                        PIZZA MAMA MIA - RECEIPT\n");
         receipt.append("===============================================================================\n\n");
 
-        // Customer info
         receipt.append("Customer: ").append(order.getCustomerName()).append("\n");
         receipt.append("Date/Time: ").append(order.getOrderTime().format(dateFormatter)).append("\n");
         receipt.append("Order #: ").append(getReceiptFileName().replace(".txt", "")).append("\n\n");
 
-        // Items section
         receipt.append("===============================================================================\n");
         receipt.append("ITEMS ORDERED:\n");
         receipt.append("===============================================================================\n\n");
 
-        // List all items
         int itemNumber = 1;
         for (MenuItem item : order.getOrderedItems()) {
             if (item instanceof Pizza) {
@@ -57,7 +49,6 @@ public class Receipt {
             }
         }
 
-        // Total
         receipt.append("===============================================================================\n");
         receipt.append("TOTAL: $").append(String.format("%.2f", order.getPrice())).append("\n");
         receipt.append("===============================================================================\n\n");
@@ -76,10 +67,10 @@ public class Receipt {
         sb.append("   Crust: ").append(pizza.getCrust()).append("\n");
 
         // List toppings
-        Map<String, List<String>> toppings = pizza.getSelectedOptions();
+        Map<Category, List<String>> toppings = pizza.getSelectedOptions();
         if (hasAnyToppings(toppings)) {
             sb.append("   Toppings:\n");
-            for (String category : toppings.keySet()) {
+            for (Category category : toppings.keySet()) {
                 List<String> items = toppings.get(category);
                 if (!items.isEmpty()) {
                     sb.append("     • ").append(category)
@@ -119,7 +110,7 @@ public class Receipt {
     /**
      * Helper: Check if pizza has any toppings
      */
-    private boolean hasAnyToppings(Map<String, List<String>> toppings) {
+    private boolean hasAnyToppings(Map<Category, List<String>> toppings) {
         for (List<String> items : toppings.values()) {
             if (!items.isEmpty()) return true;
         }

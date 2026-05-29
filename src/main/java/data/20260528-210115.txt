@@ -1,0 +1,40 @@
+===============================================================================
+                        PIZZA MAMA MIA - RECEIPT
+===============================================================================
+
+Customer: Bailey
+Date/Time: 05/28/2026 21:01:15
+Order #: 20260528-210115
+
+===============================================================================
+ITEMS ORDERED:
+===============================================================================
+
+1. PIZZA
+   Size: 8
+   Crust: thin
+   Toppings:
+     • MEAT: pepperoni
+     • EXTRA_MEAT: sausage
+     • CHEESE: Ricotta
+   Base Price: $8.50
+   Toppings Total: $2.25
+   Item Total: $10.75
+
+2. PIZZA
+   Size: 12
+   Crust: regular
+   Toppings:
+     • MEAT: pepperoni
+     • CHEESE: mozzarella
+     • REGULAR: tomatoes, basil
+     • SAUCES: marinara
+   Base Price: $12.00
+   Toppings Total: $3.50
+   Item Total: $15.50
+
+===============================================================================
+TOTAL: $26.25
+===============================================================================
+
+Thank you for your order! Come again soon! 🍕

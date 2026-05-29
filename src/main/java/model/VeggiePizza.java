@@ -4,11 +4,11 @@ public class VeggiePizza extends Pizza{
     public VeggiePizza() {
         super("8", "regular");
 
-        addTopping("regular", "bell peppers");
-        addTopping("regular", "spinach");
-        addTopping("regular", "olives");
-        addTopping("regular", "onions");
-        addTopping("sauce", "marinara");
-        addTopping("cheese", "mozzarella");
+        addTopping(Category.REGULAR, "bell peppers");
+        addTopping(Category.REGULAR, "spinach");
+        addTopping(Category.REGULAR, "olives");
+        addTopping(Category.REGULAR, "onions");
+        addTopping(Category.SAUCES, "marinara");
+        addTopping(Category.SAUCES, "mozzarella");
     }
 }

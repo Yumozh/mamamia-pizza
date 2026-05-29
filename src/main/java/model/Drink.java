@@ -12,10 +12,6 @@ public class Drink extends MenuItem{
         return flavor;
     }
 
-    public void setFlavor(String flavor) {
-        this.flavor = flavor;
-    }
-
     @Override
     public double getPrice(){
         return switch (this.size) {
