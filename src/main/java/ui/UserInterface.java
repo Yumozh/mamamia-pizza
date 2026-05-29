@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class UserInterface {
     Scanner scan = new Scanner(System.in);
-    private Order currentOrder;
 
     public void display() {
         System.out.println("===============================================================================");
@@ -42,7 +41,7 @@ public class UserInterface {
         System.out.println("Enter your name: ");
         String customerName = scan.nextLine();
 
-        currentOrder = new Order(customerName);
+        Order currentOrder = new Order(customerName);
 
         while (inOrderScreen) {
             System.out.println("===============================================================================");
@@ -124,21 +123,21 @@ public class UserInterface {
             switch (choice) {
                 case "1", "add meat", "add extra meat" -> {
                     if (isExtraMeet) {
-                        displayToppingsOptions(Category.EXTRA_MEAT, pizza);
+                        selectToppingOptions(Category.EXTRA_MEAT, pizza);
                     } else {
-                        isExtraMeet = displayToppingsOptions(Category.MEAT, pizza);
+                        isExtraMeet = selectToppingOptions(Category.MEAT, pizza);
                     }
                 }
                 case "2", "add cheese", "add extra cheese" -> {
                     if (isExtraCheese) {
-                        displayToppingsOptions(Category.EXTRA_CHEESE, pizza);
+                        selectToppingOptions(Category.EXTRA_CHEESE, pizza);
                     } else {
-                        isExtraCheese = displayToppingsOptions(Category.CHEESE, pizza);
+                        isExtraCheese = selectToppingOptions(Category.CHEESE, pizza);
                     }
                 }
-                case "3", "add regular toppings" -> displayToppingsOptions(Category.REGULAR, pizza);
-                case "4", "add sauces" -> displayToppingsOptions(Category.SAUCES, pizza);
-                case "5", "add sides" -> displayToppingsOptions(Category.SIDES, pizza);
+                case "3", "add regular toppings" -> selectToppingOptions(Category.REGULAR, pizza);
+                case "4", "add sauces" -> selectToppingOptions(Category.SAUCES, pizza);
+                case "5", "add sides" -> selectToppingOptions(Category.SIDES, pizza);
                 case "0", "exit" -> {
                     addingToppings = false;
                 }
@@ -203,11 +202,10 @@ public class UserInterface {
         }
     }
 
-    public boolean displayToppingsOptions(Category category, Pizza pizza) {
-        //display all meats available
+    public boolean selectToppingOptions(Category category, Pizza pizza) {
         ToppingCategory toppingCategory = pizza.getToppingsMap().get(category);
 
-        System.out.println("Available items in [" + toppingCategory.getCategory() + "]:");
+        System.out.println("Available items in [" + toppingCategory.getCategoryName() + "]:");
 
         int index = 1;
 
@@ -344,10 +342,9 @@ public class UserInterface {
             }
             return;//
             }
-            //Order summary review
+
             displayOrderSummary(order);
 
-            //Get confirmation
             System.out.println("\n===============================================================================");
             System.out.println("1. Confirm Order");
             System.out.println("2. Cancel Order");

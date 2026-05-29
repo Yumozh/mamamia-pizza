@@ -15,10 +15,6 @@ public class Receipt {
         this.receiptsFolder = "src/main/java/data";
     }
 
-
-    /**
-     * Generates the complete receipt content as a formatted string
-     */
     public String generateReceiptContent() {
         StringBuilder receipt = new StringBuilder();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
@@ -57,9 +53,6 @@ public class Receipt {
         return receipt.toString();
     }
 
-    /**
-     * Format pizza item for receipt
-     */
     private String formatPizzaForReceipt(Pizza pizza, int itemNumber) {
         StringBuilder sb = new StringBuilder();
         sb.append(itemNumber).append(". PIZZA\n");
@@ -85,9 +78,6 @@ public class Receipt {
         return sb.toString();
     }
 
-    /**
-     * Format drink item for receipt
-     */
     private String formatDrinkForReceipt(Drink drink, int itemNumber) {
         StringBuilder sb = new StringBuilder();
         sb.append(itemNumber).append(". DRINK\n");
@@ -97,9 +87,6 @@ public class Receipt {
         return sb.toString();
     }
 
-    /**
-     * Format garlic knots for receipt
-     */
     private String formatGarlicKnotsForReceipt(MenuItem item, int itemNumber) {
         StringBuilder sb = new StringBuilder();
         sb.append(itemNumber).append(". GARLIC KNOTS\n");
@@ -107,9 +94,6 @@ public class Receipt {
         return sb.toString();
     }
 
-    /**
-     * Helper: Check if pizza has any toppings
-     */
     private boolean hasAnyToppings(Map<Category, List<String>> toppings) {
         for (List<String> items : toppings.values()) {
             if (!items.isEmpty()) return true;

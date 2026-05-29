@@ -3,11 +3,11 @@ package model;
 import java.util.List;
 
 public class ToppingCategory {
-    private String category;
+    private String categoryName;
     private List<String> categoryOptions;
 
     public ToppingCategory(String category, List<String> categoryOptions) {
-        this.category = category;
+        this.categoryName = category;
         this.categoryOptions = categoryOptions;
     }
 
@@ -15,14 +15,14 @@ public class ToppingCategory {
         return categoryOptions;
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
     public double calculatePrice(String pizzaSize) {
         double price = 0;
 
-            if (this.category.equalsIgnoreCase("meat")) {
+            if (this.categoryName.equalsIgnoreCase("meat")) {
                 price = switch (pizzaSize) {
                     case "8", "Personal" -> 1.0;
                     case "12", "Medium" -> 2.0;
@@ -30,7 +30,7 @@ public class ToppingCategory {
                     default -> throw new IllegalStateException("Unknown pizza size");
                 };
             }
-            else if (this.category.equalsIgnoreCase("cheese")){
+            else if (this.categoryName.equalsIgnoreCase("cheese")){
                 price = switch(pizzaSize){
                     case "8", "Personal" -> 0.75;
                     case "12", "Medium" -> 1.5;
@@ -38,7 +38,7 @@ public class ToppingCategory {
                     default -> throw new IllegalStateException("Unknown pizza size");
                 };
 
-            } else if (this.category.equalsIgnoreCase("extra meat")) {
+            } else if (this.categoryName.equalsIgnoreCase("extra meat")) {
                 price = switch (pizzaSize) {
                     case "8", "Personal" -> 0.5;
                     case "12", "Medium" -> 1.0;
@@ -46,7 +46,7 @@ public class ToppingCategory {
                     default -> throw new IllegalStateException("Unknown pizza size");
                 };
             }
-            else if(this.category.equalsIgnoreCase("extra cheese")){
+            else if(this.categoryName.equalsIgnoreCase("extra cheese")){
                 price = switch(pizzaSize){
                     case "8", "Personal" -> 0.3;
                     case "12", "Medium" -> 0.6;
