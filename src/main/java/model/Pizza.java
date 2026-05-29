@@ -22,7 +22,7 @@ public class Pizza extends MenuItem{
         toppingsMap.put("extra meat", new Topping("extra meat", new ArrayList<>(List.of(
                 "pepperoni", "sausage", "ham", "bacon", "chicken", "meatball"))));
         toppingsMap.put("extra cheese", new Topping("extra cheese", new ArrayList<>(List.of(
-                "Mozzarella", "Parmesan", "Ricotta", "Goat Cheese", "Buffalo"))));
+                "mozzarella", "Parmesan", "Ricotta", "Goat Cheese", "Buffalo"))));
 
         toppingsMap.put("regular", new Topping("regular", new ArrayList<>(List.of(
                 "onions", "mushrooms", "bell peppers", "olives",
@@ -79,6 +79,23 @@ public class Pizza extends MenuItem{
         }else {
             System.out.println("Error: Category '" + category + "' not found!");
         }
+    }
+    public void removeTopping(String category, String toppingName) {
+        if (selectedOptions.containsKey(category)) {
+            selectedOptions.get(category).remove(toppingName);
+            System.out.println("Topping was removed from your order!");
+        }else {
+            System.out.println("Error: Category '" + category + "' not found!");
+        }
+    }
+
+    public boolean isAtLeastOneToppingProvided(String category)
+    {
+        if (selectedOptions.containsKey(category)) {
+            return !selectedOptions.get(category).isEmpty();
+        }
+
+        return false;
     }
 
     public double calculateToppingTotal(){

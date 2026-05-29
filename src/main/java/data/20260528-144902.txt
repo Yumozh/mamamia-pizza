@@ -1,0 +1,38 @@
+===============================================================================
+                        PIZZA MAMA MIA - RECEIPT
+===============================================================================
+
+Customer: Anthony Smith
+Date/Time: 05/28/2026 14:49:02
+Order #: 20260528-144902
+
+===============================================================================
+ITEMS ORDERED:
+===============================================================================
+
+1. PIZZA
+   Size: 8
+   Crust: thick
+   Borders Stuffed:: false
+   Toppings:
+     • sauces: buffalo
+     • extra meat: chicken
+     • meat: chicken
+     • cheese: Mozzarella
+   Base Price: $8.50
+   Toppings Total: $0.50
+   Item Total: $9.00
+
+2. DRINK
+   Flavor: orange
+   Size: small
+   Price: $2.00
+
+3. GARLIC KNOTS
+   Price: $1.50
+
+===============================================================================
+TOTAL: $12.50
+===============================================================================
+
+Thank you for your order! Come again soon! 🍕

@@ -29,10 +29,6 @@ public class Order implements Priceable{
         return customerName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
     public List<MenuItem> getOrderedItemsList() {
         return orderedItemsList;
     }
@@ -43,6 +39,7 @@ public class Order implements Priceable{
 
     public void addMenuItem(MenuItem item){
         orderedItemsList.add(item);
+        System.out.println("Item was added to your order!");
     }
     public void removeMenuItem(MenuItem item){
         orderedItemsList.remove(item);

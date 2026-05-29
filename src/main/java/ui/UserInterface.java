@@ -1,5 +1,4 @@
 package ui;
-
 import model.*;
 
 import java.util.List;
@@ -52,19 +51,24 @@ public class UserInterface {
             System.out.println("""
                     \n 
                     1. Add Pizza
-                    2. Add Drink
-                    3. Add Garlic Knots
-                    4. Check Out
-                    X. Cancel Order
+                    2. Add Signature Pizza
+                    3. Add Drink
+                    4. Add Garlic Knots
+                    5. Check Out
+                    0. Cancel Order
                     """);
             String choice = scan.nextLine().toLowerCase().trim();
 
             switch (choice) {
                 case "1", "add pizza" -> addPizzaToOrder(currentOrder);
-                case "2", "add drink" -> addDrinkToOrder(currentOrder);
-                case "3", "add garlic knots" -> addGarlicKnotsToOrder(currentOrder);
-                case "4", "check out" -> checkout(currentOrder);
-                case "x", "cancel" -> {
+                case "2", "add signature pizza" -> addSignaturePizza(currentOrder);
+                case "3", "add drink" -> addDrinkToOrder(currentOrder);
+                case "4", "add garlic knots" -> addGarlicKnotsToOrder(currentOrder);
+                case "5", "check out" -> {
+                    checkout(currentOrder);
+                    inOrderScreen = false;
+                }
+                case "0", "cancel" -> {
                     System.out.println("Order cancelled. Returning to home screen...");
                     inOrderScreen = false;
                 }
@@ -77,18 +81,18 @@ public class UserInterface {
         System.out.println("""
                         \n
                         Select size of your pizza from following:
-                        1 - Personal (8")
-                        2 - Medium (12")
-                        3 - Large (16")
+                        Personal (8")
+                        Medium (12")
+                        Large (16")
                 """);
         String sizePizza = scan.nextLine();
         System.out.println("""
                         \n
                         Select crust of your pizza from following:
-                        1 - Thin
-                        2 - Regular
-                        3 - Thick
-                        4 - Cauliflower
+                        - thin
+                        - regular
+                        - thick
+                        - cauliflower
                 """);
         String crust = scan.nextLine();
 
@@ -97,10 +101,66 @@ public class UserInterface {
         order.addMenuItem(pizza);
     }
 
+    public void addSignaturePizza(Order order){
+        boolean inSignaturePizza = true;
+        MargheritaPizza pizzaMargherita = new MargheritaPizza();
+        VeggiePizza pizzaWithVeggies = new VeggiePizza();
+
+            while (inSignaturePizza){
+            System.out.println("===============================================================================\n");
+            System.out.println("                     SIGNATURE PIZZA");
+            System.out.println("===============================================================================\n");
+            System.out.println("""
+                            \n
+                            1. Margherita
+                            2. Veggie Pizza
+                            3. Home Screen
+                    """);
+            String choice = scan.nextLine();
+            switch(choice){
+                case "1" -> {
+                    askForAction(pizzaMargherita);
+                    order.addMenuItem(pizzaMargherita);
+                    inSignaturePizza = false;
+                }
+                case "2" -> {
+                    askForAction(pizzaWithVeggies);
+                    order.addMenuItem(pizzaWithVeggies);
+                    inSignaturePizza = false;
+                }
+                case "3" -> {
+                    inSignaturePizza = false;
+                }
+            }
+        }
+    }
+
+    public void askForAction(Pizza pizza) {
+        while (true) {
+            System.out.println("\n--- Modify Your Pizza ---");
+            System.out.println("1. Add a topping");
+            System.out.println("2. Remove a topping");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+
+            String input = scan.nextLine().trim().toLowerCase();
+
+            switch (input) {
+                case "1" -> displayCategoryMenu(pizza);
+                case "2" -> startRemoveToppingsPrompt(pizza);
+                case "3", "exit" -> {
+                    System.out.println("Finished modifying pizza.");
+                    return;
+                }
+                default -> System.out.println("Invalid option. Please enter 1, 2, or 3.");
+            }
+        }
+    }
+
     public void displayCategoryMenu(Pizza pizza) {
         boolean addingToppings = true;
-        boolean isExtraMeet = false;
-        boolean isExtraCheese = false;
+        boolean isExtraMeet = pizza.isAtLeastOneToppingProvided("meat");
+        boolean isExtraCheese = pizza.isAtLeastOneToppingProvided("cheese");
 
         while (addingToppings) {
             System.out.println("\\n=== SELECT TOPPING CATEGORY ===");
@@ -134,7 +194,7 @@ public class UserInterface {
                 case "3", "add regular toppings" -> displayToppingsOptions(pizza.getToppingsMap(), "regular", pizza);
                 case "4", "add sauces" -> displayToppingsOptions(pizza.getToppingsMap(), "sauces", pizza);
                 case "5", "add sides" -> displayToppingsOptions(pizza.getToppingsMap(), "sides", pizza);
-                case "x", "exit" -> {
+                case "0", "exit" -> {
                     addingToppings = false;
                 }
                 default -> throw new IllegalStateException("Invalid input! Try again.");
@@ -142,7 +202,7 @@ public class UserInterface {
         }
     }
 
-    public boolean displayToppingsOptions(Map<String, Topping> toppingsMap, String category, Pizza pizza){
+    public boolean displayToppingsOptions(Map<String, Topping> toppingsMap, String category, Pizza pizza) {
         //display all meats available
         Topping topping = toppingsMap.get(category.toLowerCase());
 
@@ -151,7 +211,7 @@ public class UserInterface {
             int index = 0;
             for (String option : topping.getCategoryOptions()) {
                 System.out.println(index + " " + option);
-                index ++;
+                index++;
             }
         } else {
             System.out.println("Category '" + category + "' does not exist.");
@@ -159,6 +219,57 @@ public class UserInterface {
         }
 
         return addToppingToPizza(category, pizza, topping);
+    }
+
+    public void startRemoveToppingsPrompt(Pizza pizza)
+    {
+        while (true) {
+            Map<String, List<String>> toppings = pizza.getSelectedOptions();
+
+            for (Map.Entry<String, List<String>> entry : toppings.entrySet()) {
+                if (entry.getValue().isEmpty()) {
+                    continue;
+                }
+
+                System.out.println(entry.getKey());
+
+                for (String topping : entry.getValue()) {
+                    System.out.println("    " + topping);
+                }
+            }
+
+            System.out.print("\nEnter a topping to remove (or type 'exit' to finish): ");
+            String input = scan.nextLine().trim();
+
+            if (input.equalsIgnoreCase("exit")) {
+                System.out.println("Exiting topping removal.");
+                break; // Breaks out of the while loop immediately
+            }
+
+            String targetCategory = null;
+            String exactToppingName = null;
+
+            for (Map.Entry<String, List<String>> entry : toppings.entrySet()) {
+                for (String topping : entry.getValue()) {
+                    if (topping.equalsIgnoreCase(input)) {
+                        targetCategory = entry.getKey();
+                        exactToppingName = topping; // Capture exact case for the remove method
+                        break;
+                    }
+                }
+                if (targetCategory != null) {
+                    break;
+                }
+            }
+
+            if (targetCategory == null) {
+                System.out.println("Error: '" + input + "' is not currently on your pizza. Please try again.\n");
+                continue;
+            }
+
+            pizza.removeTopping(targetCategory, exactToppingName);
+            System.out.println();
+        }
     }
 
     private boolean addToppingToPizza(String category, Pizza pizza, Topping topping) {
@@ -196,21 +307,24 @@ public class UserInterface {
     }
 
     private void addDrinkToOrder(Order order){
+        System.out.println("===============================================================================");
+        System.out.println("                     DRINKS LIST ");
+        System.out.println("===============================================================================\n");
         System.out.println("""
                         \n
                         Select size of your drink from following:
-                        1 - Small
-                        2 - Medium
-                        3 - Large
+                        small
+                        medium
+                        large
                 """);
         String drinkSize = scan.nextLine();
         System.out.println("""
                         \n
                         Select flavor of your drink from following:
-                        1 - Cola
-                        2 - Orange
-                        3 - Lemon
-                        4 - Root Beer
+                        Cola
+                        Orange
+                        Lemon
+                        Root Beer
                 """);
         String drinkFlavor = scan.nextLine();
 
@@ -240,8 +354,32 @@ public class UserInterface {
             }
             return;//
             }
-
+            //Order summary review
             displayOrderSummary(order);
+
+            //Get confirmation
+            System.out.println("\n===============================================================================");
+            System.out.println("1. Confirm Order");
+            System.out.println("2. Cancel Order");
+            System.out.println("===============================================================================");
+            System.out.println("Please enter your choice: ");
+            String choice = scan.nextLine().toLowerCase().trim();
+
+            switch (choice) {
+                case "1", "confirm" -> {
+                    Receipt receipt = new Receipt(order);
+                    if (receipt.saveReceipt()) {
+                        System.out.println("\nOrder confirmed! Receipt saved.");
+                        System.out.println("Thank you for your order! 🍕");
+                    }
+                    hasMenuItems = false;
+                }
+                case "2", "cancel" -> {
+                    System.out.println("\n Order cancelled.");
+                    hasMenuItems = false;
+                }
+                default -> System.out.println("Invalid input! Try again.");
+            }
         }
 
     }
@@ -271,11 +409,13 @@ public class UserInterface {
                     }
                 }
                 System.out.println("  Price: $"+ String.format("%.2f", pizza.getPrice()) + "\n");
+
             } else if (item instanceof Drink) {
                 Drink drink = (Drink) item;
-                System.out.println(itemNumber + ". DRINK -" + drink.getFlavor());
+                System.out.println(itemNumber + ". DRINK - " + drink.getFlavor());
                 System.out.println(" Size: " + drink.getSize());
-                System.out.println(" Price: $" + drink.getPrice());
+                System.out.println(" Price: $" + String.format("%.2f", drink.getPrice()));
+
             } else if (item instanceof GarlicKnots){
                 System.out.println(itemNumber + ". GARLIC KNOTS");
                 System.out.println(" Price: $" + item.getPrice());
