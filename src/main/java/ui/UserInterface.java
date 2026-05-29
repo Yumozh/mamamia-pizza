@@ -81,9 +81,9 @@ public class UserInterface {
         System.out.println("""
                         \n
                         Select size of your pizza from following:
-                        8 - Personal (8")
-                        12 - Medium (12")
-                        16 - Large (16")
+                        8 - Personal (8") $8.5
+                        12 - Medium (12") $12.0
+                        16 - Large (16") $16.5
                 """);
         String sizePizza = scan.nextLine();
         System.out.println("""
@@ -225,7 +225,7 @@ public class UserInterface {
         int totalOptions = options.size();
 
         try {
-            // Try parsing the input to an integer choice
+
             int choiceNumber = Integer.parseInt(choice);
 
             if (choiceNumber >= 1 && choiceNumber < totalOptions - 1) {
@@ -301,9 +301,9 @@ public class UserInterface {
         System.out.println("""
                         \n
                         Select size of your drink from following:
-                        small
-                        medium
-                        large
+                        small - $2.0
+                        medium - $2.5
+                        large - $3.0
                 """);
         String drinkSize = scan.nextLine();
         System.out.println("""
